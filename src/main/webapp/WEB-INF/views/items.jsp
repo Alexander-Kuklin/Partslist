@@ -54,6 +54,17 @@
         </tr>
         <tr>
             <td>
+                <form:label path="req">
+                    <spring:message text="Required"/>
+                </form:label>
+            </td>
+            <td>
+                <%--<form:input path="req"/>--%>
+                <form:checkbox path="req"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
                 <form:label path="qty">
                     <spring:message text="Qty"/>
                 </form:label>
@@ -78,11 +89,12 @@
 </form:form>
 <br>
 
-<h3>Parts - List</h3>
+
   <c:if test="${!empty listItem}">
+      <h3>Parts - List</h3>
       <table class="tg" border="1">
           <tr>
-              <th width="80">ID</th>
+   <%--           <th width="80">ID</th>--%>
               <th width="120">Name</th>
               <th width="120">Required</th>
               <th width="80">Qty</th>
@@ -91,16 +103,57 @@
           </tr>
           <c:forEach items="${listItem}" var="item">
               <tr>
-                  <td>${item.id}</td>
+                 <%-- <td>${item.id}</td>--%>
                   <td>${item.name}</td>
-                  <td>${item.req}</td>
+                  <%--<td>${item.req}</td>--%>
+                  <td align="center">
+                     <c:if test="${item.req == true}">V</c:if>
+                  </td>
                   <td>${item.qty}</td>
-                  <td><a href="<c:url value='/edit/${item.id}'/>">EDIT</a></td>
-                  <td><a href="<c:url value='/remove/${item.id}'/>">DELETE</a></td>
+                  <td align="center"><a href="<c:url value='/edit/${item.id}'/>">EDIT</a></td>
+                  <td align="center"><a href="<c:url value='/remove/${item.id}'/>">DELETE</a></td>
               </tr>
           </c:forEach>
       </table>
   </c:if>
 
+<table width="532" align="right">
+<div id="pagination">
+    <c:url value="/items" var="prev">
+        <c:param name="page" value="${page-1}"/>
+    </c:url>
+    <c:if test="${page > 1}">
+        <a href="<c:out value="${prev}" />" class="pn prev">PREV</a>
+    </c:if>
+
+    <c:forEach begin="1" end="${maxPages}" step="1" varStatus="i">
+        <c:choose>
+            <c:when test="${page == i.index}">
+                <span>${i.index}</span>
+            </c:when>
+            <c:otherwise>
+                <c:url value="/items" var="url">
+                    <c:param name="page" value="${i.index}"/>
+                </c:url>
+                <a href='<c:out value="${url}" />'>${i.index}</a>
+            </c:otherwise>
+        </c:choose>
+    </c:forEach>
+    <c:url value="/items" var="next">
+        <c:param name="page" value="${page + 1}"/>
+    </c:url>
+    <c:if test="${page + 1 <= maxPages}">
+        <a href='<c:out value="${next}" />' class="pn next">NEXT</a>
+
+</div>
+</table>
+
+<table border="1" class="tg">
+    <tr>
+        <td width="350" align="right">QTY availiable:</td>
+        <td width="182" align="center">${counter}</td>
+    </tr>
+</table>
+</c:if>
   </body>
 </html>

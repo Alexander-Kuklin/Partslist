@@ -29,6 +29,7 @@ public class ItemController {
         model.addAttribute("item", new Item());
         List<Item> items = this.itemService.listItem();
         //model.addAttribute("listItem", this.itemService.listItem());
+        model.addAttribute("counter", this.itemService.canCollect());
         setPaging(page, model, items);
         return "items";
     }

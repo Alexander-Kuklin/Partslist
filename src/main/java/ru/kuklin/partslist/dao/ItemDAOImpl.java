@@ -63,4 +63,15 @@ public class ItemDAOImpl implements ItemDAO {
             logger.info("Removing items error, items not found");
         }
     }
+
+    @Override
+    public int canCollect() {
+        Session session = this.sessionFactory.getCurrentSession();
+        List<Item> list = listItem();
+        int result = Integer.MAX_VALUE;
+        for(Item i:list){
+            if(i.getReq()==true && i.getQty()<result)result=i.getQty();
+        }
+        return result;
+    }
 }

@@ -9,4 +9,5 @@ public interface ItemDAO {
     public List<Item> listItem();
     public Item getItemById(int id);
     public void removeItem(int id);
+    public int canCollect();
 }

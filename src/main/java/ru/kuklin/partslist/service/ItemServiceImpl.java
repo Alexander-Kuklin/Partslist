@@ -45,4 +45,12 @@ public class ItemServiceImpl implements ItemService{
     public void removeItem(int id) {
         this.itemDAO.removeItem(id);
     }
+
+    @Override
+    @Transactional
+    public int canCollect(){
+        return this.itemDAO.canCollect();
+    }
+
+
 }
