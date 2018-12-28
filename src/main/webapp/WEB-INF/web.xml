@@ -30,4 +30,14 @@
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 
+	<filter>
+		<filter-name>FilterCharset</filter-name>
+		<filter-class>ru.kuklin.partslist.service.FilterCharset</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>FilterCharset</filter-name>
+		<servlet-name>appServlet</servlet-name>
+	</filter-mapping>
+
 </web-app>
