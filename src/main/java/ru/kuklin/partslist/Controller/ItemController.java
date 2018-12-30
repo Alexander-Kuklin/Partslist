@@ -29,7 +29,8 @@ public class ItemController {
         model.addAttribute("item", new Item());
         List<Item> items = this.itemService.listItem();
         //model.addAttribute("listItem", this.itemService.listItem());
-        model.addAttribute("counter", this.itemService.canCollect());
+//        model.addAttribute("counter", this.itemService.canCollect());
+        canCollect(items, model);
         setPaging(page, model, items);
         return "items";
     }
@@ -71,5 +72,13 @@ public class ItemController {
 
         pagedListHolder.setPage(page-1);
         model.addAttribute("listItem", pagedListHolder.getPageList());
+    }
+
+    public void canCollect(List<Item> list, Model model) {
+        int result = Integer.MAX_VALUE;
+        for(Item i:list){
+            if(i.getReq()==true && i.getQty()<result)result=i.getQty();
+        }
+        model.addAttribute("counter", result);
     }
 }

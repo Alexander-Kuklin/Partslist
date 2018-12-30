@@ -45,7 +45,7 @@
         <tr>
             <td>
                 <form:label path="name">
-                    <spring:message text="Name"/>
+                    <spring:message text="Наименование"/>
                 </form:label>
             </td>
             <td>
@@ -55,7 +55,7 @@
         <tr>
             <td>
                 <form:label path="req">
-                    <spring:message text="Required"/>
+                    <spring:message text="Необходимость"/>
                 </form:label>
             </td>
             <td>
@@ -66,7 +66,7 @@
         <tr>
             <td>
                 <form:label path="qty">
-                    <spring:message text="Qty"/>
+                    <spring:message text="Количество"/>
                 </form:label>
             </td>
             <td>
@@ -77,11 +77,11 @@
             <td colspan="2">
                 <c:if test="${!empty item.name}">
                     <input type="submit"
-                           value="<spring:message text="Edit Item"/>" />
+                           value="<spring:message text="Изменить"/>" />
                 </c:if>
                 <c:if test="${empty item.name}">
                     <input type="submit"
-                           value="<spring:message text="Add Item"/>" />
+                           value="<spring:message text="Добавить"/>" />
                 </c:if>
             </td>
         </tr>
@@ -95,11 +95,11 @@
       <table class="tg" border="1">
           <tr>
    <%--           <th width="80">ID</th>--%>
-              <th width="120">Name</th>
-              <th width="120">Required</th>
-              <th width="80">Qty</th>
-              <th width="60">Edit</th>
-              <th width="60">Delete</th>
+              <th width="120">Наименование</th>
+              <th width="120">Необходимость</th>
+              <th width="80">Количество</th>
+              <th width="60">Изменить</th>
+              <th width="60">Удалить</th>
           </tr>
           <c:forEach items="${listItem}" var="item">
               <tr>
@@ -110,8 +110,8 @@
                      <c:if test="${item.req == true}">V</c:if>
                   </td>
                   <td>${item.qty}</td>
-                  <td align="center"><a href="<c:url value='/edit/${item.id}'/>">EDIT</a></td>
-                  <td align="center"><a href="<c:url value='/remove/${item.id}'/>">DELETE</a></td>
+                  <td align="center"><a href="<c:url value='/edit/${item.id}'/>">Изменить</a></td>
+                  <td align="center"><a href="<c:url value='/remove/${item.id}'/>">Удалить</a></td>
               </tr>
           </c:forEach>
       </table>
@@ -150,8 +150,9 @@
 
 <table border="1" class="tg">
     <tr>
-        <td width="350" align="right">QTY availiable:</td>
-        <td width="182" align="center">${counter}</td>
+        <td width="250" align="right">Можно собрать:</td>
+        <td width="132" align="center">${counter}</td>
+        <td width="130" align="left">компьютеров</td>
     </tr>
 </table>
 </c:if>

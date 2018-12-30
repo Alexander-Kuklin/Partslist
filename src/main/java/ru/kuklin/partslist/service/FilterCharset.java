@@ -5,7 +5,7 @@ import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
 
-@WebFilter(filterName = "MYFilter", urlPatterns = { "/*"})
+//@WebFilter(filterName = "MYFilter", urlPatterns = { "/*"})
 public class FilterCharset implements Filter {
     private FilterConfig config;
 
