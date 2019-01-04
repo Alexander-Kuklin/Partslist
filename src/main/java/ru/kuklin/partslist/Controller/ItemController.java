@@ -79,6 +79,7 @@ public class ItemController {
         for(Item i:list){
             if(i.getReq()==true && i.getQty()<result)result=i.getQty();
         }
+        if(result<0)result=0;
         model.addAttribute("counter", result);
     }
 }
