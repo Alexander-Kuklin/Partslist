@@ -38,9 +38,9 @@ public class ItemDAOImpl implements ItemDAO {
     public List<Item> listItem() {
         Session session = this.sessionFactory.getCurrentSession();
         List<Item> listItem = session.createQuery("from Item").list();
-        for(Item item:listItem){
-            logger.info("Items list:" + item);
-        }
+//        for(Item item:listItem){
+//            logger.info("Items list:" + item);
+//        }
         return listItem;
     }
 

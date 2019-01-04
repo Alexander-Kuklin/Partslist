@@ -28,37 +28,40 @@ public class ItemController {
     public String listItems(@RequestParam(required = false) Integer page, Model model){
         model.addAttribute("item", new Item());
         List<Item> items = this.itemService.listItem();
-        //model.addAttribute("listItem", this.itemService.listItem());
-//        model.addAttribute("counter", this.itemService.canCollect());
         canCollect(items, model);
         setPaging(page, model, items);
-        return "items";
+//        logger.info("********************************** return items **********************************");
+        return "item";
     }
 
     @RequestMapping(value = "/item/add", method = RequestMethod.POST)
     public String addItem(@ModelAttribute("item") Item item){
-        if(item.getId() == 0)
+        if(item.getId() == 0) {
+            logger.info("****************** worked create items ***************");
             this.itemService.addItem(item);
+        }
         else
             this.itemService.updateItem(item);
-        return "redirect://items";
+        logger.info("********************************** worked update items **********************************");
+        return "redirect:/items";
     }
 
     @RequestMapping("/remove/{id}")
     public String removeItem(@PathVariable("id") int id){
         this.itemService.removeItem(id);
-        return "redirect://items";
+        logger.info("********************************** return redirect items **********************************");
+        return "redirect:/items";
     }
 
     @RequestMapping("/edit/{id}")
     public String editItem(@PathVariable("id") int id, Model model){
         model.addAttribute("item", this.itemService.getItemById(id));
         model.addAttribute("listItems", this.itemService.listItem());
-        return "items";
+        logger.info("********************************** return item **********************************");
+        return "item";
     }
 
     private void setPaging(Integer page, Model model, List<Item> items) {
-        logger.info("Work setPaging");
         PagedListHolder<Item> pagedListHolder = new PagedListHolder<Item>(items);
         pagedListHolder.setPageSize(10);
 

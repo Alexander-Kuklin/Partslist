@@ -9,13 +9,13 @@ public class Item {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
     @Column(name = "name")
     private String name;
 
     @Column(name = "qty")
-    private Integer qty;
+    private int qty;
 
     @Column(name = "req")
     private Boolean req;
@@ -29,11 +29,11 @@ public class Item {
         this.req = req;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -45,11 +45,11 @@ public class Item {
         this.name = name;
     }
 
-    public Integer getQty() {
+    public int getQty() {
         return qty;
     }
 
-    public void setQty(Integer qty) {
+    public void setQty(int qty) {
         this.qty = qty;
     }
 

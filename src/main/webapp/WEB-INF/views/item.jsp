@@ -22,7 +22,7 @@
 </head>
 <body>
 <h1>
-    Add a item
+    Добавить деталь:
 </h1>
 
 <c:url var="addAction" value="/item/add" ></c:url>
@@ -91,7 +91,7 @@
 
 
   <c:if test="${!empty listItem}">
-      <h3>Parts - List</h3>
+      <h3>Список комплектующих:</h3>
       <table class="tg" border="1">
           <tr>
    <%--           <th width="80">ID</th>--%>
@@ -123,7 +123,7 @@
         <c:param name="page" value="${page-1}"/>
     </c:url>
     <c:if test="${page > 1}">
-        <a href="<c:out value="${prev}" />" class="pn prev">PREV</a>
+        <a href="<c:out value="${prev}" />" class="pn prev">Пред</a>
     </c:if>
 
     <c:forEach begin="1" end="${maxPages}" step="1" varStatus="i">
@@ -143,7 +143,7 @@
         <c:param name="page" value="${page + 1}"/>
     </c:url>
     <c:if test="${page + 1 <= maxPages}">
-        <a href='<c:out value="${next}" />' class="pn next">NEXT</a>
+        <a href='<c:out value="${next}" />' class="pn next">След</a>
 
 </div>
 </table>
