@@ -25,8 +25,10 @@
     Добавить деталь:
 </h1>
 
+<c:set var="currentPage" value="${requestScope['javax.servlet.forward.request_uri']}"/>
+<c:set var="currentQuery" value="&${pageContext.request.queryString}"/>
+<table><tr><td width="295">
 <c:url var="addAction" value="/item/add" ></c:url>
-
 <form:form action="${addAction}" modelAttribute="item">
     <table>
         <c:if test="${!empty item.name}">
@@ -85,19 +87,46 @@
                 </c:if>
             </td>
         </tr>
+        <tr>
+            <c:if test="${!empty error}">
+                <p style="color: red">${error}</p>
+            </c:if>
+        </tr>
     </table>
 </form:form>
-<br>
+</td><td width="275" style="vertical-align: top">
+    <c:url var="addAction" value="/item/search"></c:url>
+
+    <form:form action="${searchAction}" modelAttribute="item" method="post">
+        <table width="275">
+            <tr><td align="right" style="vertical-align: top;">
+                <input type="text" name="searchItem" id="searchItem"
+                       placeholder="Введите наименование"/>
+
+                <input type="submit"
+                       value="<spring:message text="Поиск"/>"/>
+
+                <c:if test="${currentPage == '/item/search'}">
+                    <a href="/items" style="color: red;">отмена поиска</a>
+                </c:if>
+
+            </td></tr>
+        </table>
+    </form:form>
+
+
+</td></tr></table>
+
 
 
   <c:if test="${!empty listItem}">
       <h3>Список комплектующих:</h3>
       <table class="tg" border="1">
           <tr>
-   <%--           <th width="80">ID</th>--%>
-              <th width="120">Наименование</th>
-              <th width="120">Необходимость</th>
-              <th width="80">Количество</th>
+              <%--<th width="80">ID</th>--%>
+              <th width="200"><a href="?page=${page}&sort=name">Наименование</a></th>
+              <th width="120"><a href="?sort=req">Необходимость</a></th>
+              <th width="80"><a href="?sort=qty">Количество</a></th>
               <th width="60">Изменить</th>
               <th width="60">Удалить</th>
           </tr>
@@ -117,10 +146,46 @@
       </table>
   </c:if>
 
-<table width="532" align="right">
-<div id="pagination">
+<c:choose>
+    <c:when test="${currentPage == '/item/search'}">
+        <table width="532" align="right">
+        <div id="pagination">
+        <c:url value="/item/search" var="prev">
+            <c:param name="page" value="${page-1}"/>
+        </c:url>
+        <c:if test="${page > 1}">
+            <a href="<c:out value="${prev}" />" class="pn prev">Пред</a>
+        </c:if>
+
+        <c:forEach begin="1" end="${maxPages}" step="1" varStatus="i">
+            <c:choose>
+                <c:when test="${page == i.index}">
+                    <span>${i.index}</span>
+                </c:when>
+                <c:otherwise>
+                    <c:url value="/item/search" var="url">
+                        <c:param name="page" value="${i.index}"/>
+                    </c:url>
+                    <a href='<c:out value="${url}" />'>${i.index}</a>
+                </c:otherwise>
+            </c:choose>
+        </c:forEach>
+        <c:url value="/item/search" var="next">
+            <c:param name="page" value="${page + 1}"/>
+        </c:url>
+        <c:if test="${page + 1 <= maxPages}">
+            <a href='<c:out value="${next}" />' class="pn next">След</a>
+
+        </div>
+        </table>
+        </c:if>
+    </c:when>
+
+    <c:otherwise>
+    <table width="532" align="right">
+    <div id="pagination">
     <c:url value="/items" var="prev">
-        <c:param name="page" value="${page-1}"/>
+        <c:param name="page" value="${page-1}&${currentQuery}"/>
     </c:url>
     <c:if test="${page > 1}">
         <a href="<c:out value="${prev}" />" class="pn prev">Пред</a>
@@ -143,7 +208,7 @@
         <c:param name="page" value="${page + 1}"/>
     </c:url>
     <c:if test="${page + 1 <= maxPages}">
-        <a href='<c:out value="${next}" />' class="pn next">След</a>
+        <a href='<c:out value="${next.concat(currentQuery)}" />' class="pn next">След</a>
 
 </div>
 </table>
@@ -156,5 +221,19 @@
     </tr>
 </table>
 </c:if>
+    </c:otherwise>
+</c:choose>
+
+<br>
+<h5>test</h5>
+<h5>${currentQuery}</h5>
+<%--<br>
+<h5>${pageContext.request.pathInfo}</h5>
+<h5>${pageContext.request.queryString}</h5>
+<h5>${pageContext.request.servletPath}</h5>
+<h5>${pageContext.request.contextPath}</h5>
+<h5>${pageContext.request.method}</h5>--%>
+<a href="?${currentQuery}">testlink</a>
+
   </body>
 </html>

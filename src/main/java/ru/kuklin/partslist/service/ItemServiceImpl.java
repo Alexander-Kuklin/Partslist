@@ -30,8 +30,21 @@ public class ItemServiceImpl implements ItemService{
 
     @Override
     @Transactional
-    public List<Item> listItem() {
-        return this.itemDAO.listItem();
+    public List<Item> listItem(String sort) {
+        return this.itemDAO.listItem("from Item order by "+sort);
+    }
+
+    @Override
+    @Transactional
+    public List<Item> getItemByName(String search, String sort) {
+        StringBuilder query = new StringBuilder();
+        query.append("from Item");
+        query.append(" where lower(name) like lower('%" + search + "%')");
+        if(sort!=null){
+            if(sort.equals("req"))sort = "req desc";
+            query.append(" order by "+sort);
+        }
+        return this.itemDAO.listItem(query.toString());
     }
 
     @Override

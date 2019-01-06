@@ -35,14 +35,24 @@ public class ItemDAOImpl implements ItemDAO {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<Item> listItem() {
+    public List<Item> listItem(String query) {
+//        if(sort.equals("req"))sort = "req desc";
         Session session = this.sessionFactory.getCurrentSession();
-        List<Item> listItem = session.createQuery("from Item").list();
+//        List<Item> listItem = session.createQuery("from Item order by "+sort).list();
+        List<Item> listItem = session.createQuery(query).list();
 //        for(Item item:listItem){
 //            logger.info("Items list:" + item);
 //        }
         return listItem;
     }
+
+//    @SuppressWarnings("unchecked")
+//    @Override
+//    public List<Item> getItemByName(String search) {
+//        Session session = this.sessionFactory.getCurrentSession();
+//        List<Item> itemList = session.createQuery("from Item where lower(name) like lower('%"+ search+"%')").list();
+//        return itemList;
+//    }
 
     @Override
     public Item getItemById(int id) {
@@ -67,7 +77,7 @@ public class ItemDAOImpl implements ItemDAO {
     @Override
     public int canCollect() {
         Session session = this.sessionFactory.getCurrentSession();
-        List<Item> list = listItem();
+        List<Item> list = listItem("name");
         int result = Integer.MAX_VALUE;
         for(Item i:list){
             if(i.getReq()==true && i.getQty()<result)result=i.getQty();

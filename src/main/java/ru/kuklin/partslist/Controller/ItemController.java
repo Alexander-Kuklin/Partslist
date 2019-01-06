@@ -18,6 +18,9 @@ import java.util.List;
 public class ItemController {
     private static final Logger logger = LoggerFactory.getLogger(ItemController.class);
     private ItemService itemService;
+    private String errorDB = null;
+    private String searchString = null;
+    private String sortType = "name";
     private int currentPage = 0;
 
     @Autowired(required = true)
@@ -25,39 +28,54 @@ public class ItemController {
     public void setItemService(ItemService itemService) {this.itemService = itemService;}
 
     @RequestMapping(value = "/items", method = RequestMethod.GET)
-    public String listItems(@RequestParam(required = false) Integer page, Model model){
+    public String listItems(@RequestParam(required = false) Integer page, String sort, Model model){
+        if(sort!=null)sortType=sort;
         model.addAttribute("item", new Item());
-        List<Item> items = this.itemService.listItem();
+        model.addAttribute("error", errorDB);
+        errorDB = null;
+        List<Item> items = this.itemService.listItem(sortType);
         canCollect(items, model);
         setPaging(page, model, items);
 //        logger.info("********************************** return items **********************************");
         return "item";
     }
 
+    @RequestMapping(value = "item/search")
+    public String searchItem(@RequestParam(required = false) Integer page, @RequestParam(required = false) String searchItem, String sort, Model model) {
+        model.addAttribute("item", new Item());
+        String search;
+        if(sort!=null)sortType=sort;
+        if(searchItem!=null){
+            search=searchItem;
+            searchString=searchItem;
+        }
+        else if(searchString!=null)search=searchString;
+        else return "redirect:/items";
+
+        List<Item> listSearch = this.itemService.getItemByName(search, sortType);
+        setPaging(page, model, listSearch);
+        return "item";
+    }
+
     @RequestMapping(value = "/item/add", method = RequestMethod.POST)
     public String addItem(@ModelAttribute("item") Item item){
-        if(item.getId() == 0) {
-            logger.info("****************** worked create items ***************");
+        if(item.getId() == 0)
             this.itemService.addItem(item);
-        }
         else
             this.itemService.updateItem(item);
-        logger.info("********************************** worked update items **********************************");
         return "redirect:/items";
     }
 
     @RequestMapping("/remove/{id}")
     public String removeItem(@PathVariable("id") int id){
         this.itemService.removeItem(id);
-        logger.info("********************************** return redirect items **********************************");
         return "redirect:/items";
     }
 
     @RequestMapping("/edit/{id}")
     public String editItem(@PathVariable("id") int id, Model model){
         model.addAttribute("item", this.itemService.getItemById(id));
-        model.addAttribute("listItems", this.itemService.listItem());
-        logger.info("********************************** return item **********************************");
+        model.addAttribute("listItems", this.itemService.listItem(sortType));
         return "item";
     }
 
