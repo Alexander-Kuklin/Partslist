@@ -44,6 +44,7 @@ public class ItemController {
 //        String search;
         model.addAttribute("sort", sort);
         model.addAttribute("searchItem", searchItem);
+        model.addAttribute("filter", false);
 //        if(searchItem!=null){
 //            search=searchItem;
 //            searchString=searchItem;
@@ -55,6 +56,17 @@ public class ItemController {
         setPaging(page, model, listSearch);
         return "item";
     }
+
+//    @RequestMapping(value = "item/filter")
+//    public String filterItem(@RequestParam(required = false) Integer page, @RequestParam(required = false) String filterItem, String sort, Model model) {
+//        model.addAttribute("item", new Item());
+//        model.addAttribute("sort", sort);
+//        model.addAttribute("filterItem", filterItem);
+//
+//        List<Item> listSearch = this.itemService.getItemByFilter(filterItem, sort);
+//        setPaging(page, model, listSearch);
+//        return "item";
+//    }
 
     @RequestMapping(value = "/item/add", method = RequestMethod.POST)
     public String addItem(@ModelAttribute("item") Item item){

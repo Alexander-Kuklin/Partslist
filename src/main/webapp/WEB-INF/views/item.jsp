@@ -117,9 +117,15 @@
         </table>
     </form:form>
     </c:if>
-        <h4>Фильтр:</h4>
-        <a href="/item/filter">Все детали</a>
-        <a href="/item/filter">Только необходимые</a>
+
+        Фильтр:
+        <SELECT id="filter" name="filter" >
+            <option value="a" ${filter== 'a' ? 'selected' : ''}>A1</option>
+            <option value="b" ${filter== 'b' ? 'selected' : ''}>B1</option>
+            <option value="c" ${filter== 'c' ? 'selected' : ''}>C1</option>
+            <option value="d" ${filter== 'd' ? 'selected' : ''}>D1</option>
+
+        </select>
 </td></tr></table>
 
 
@@ -151,15 +157,12 @@
           </tr>
           <c:forEach items="${listItem}" var="item">
               <tr>
-                 <%-- <td>${item.id}</td>--%>
                   <td>${item.name}</td>
-                  <%--<td>${item.req}</td>--%>
                   <td align="center">
                       <c:choose>
                           <c:when test="${item.req== true}">Да</c:when>
                           <c:otherwise>Нет</c:otherwise>
                       </c:choose>
-                     <%--<c:if test="${item.req == true}">V</c:if>--%>
                   </td>
                   <td align="center">${item.qty}</td>
                   <td align="center"><a href="<c:url value='/edit/${item.id}'/>">Изменить</a></td>
@@ -222,6 +225,8 @@
     <%--<tr><td>requestScope</td><td>${requestScope['javax.servlet.forward.request_uri']}</td></tr>--%>
     <%--<tr><td>queryString</td><td>${pageContext.request.queryString}</td></tr>--%>
 <%--</table>--%>
+<h5>values:</h5>
+<h1>${filter}</h1>
 
   </body>
 </html>
