@@ -18,9 +18,8 @@ import java.util.List;
 public class ItemController {
     private static final Logger logger = LoggerFactory.getLogger(ItemController.class);
     private ItemService itemService;
-    private String errorDB = null;
-    private String searchString = null;
-    private String sortType = "name";
+//    private String searchString = null;
+//    private String sortType = "name";
     private int currentPage = 0;
 
     @Autowired(required = true)
@@ -29,11 +28,9 @@ public class ItemController {
 
     @RequestMapping(value = "/items", method = RequestMethod.GET)
     public String listItems(@RequestParam(required = false) Integer page, String sort, Model model){
-        if(sort!=null)sortType=sort;
         model.addAttribute("item", new Item());
-        model.addAttribute("error", errorDB);
-        errorDB = null;
-        List<Item> items = this.itemService.listItem(sortType);
+        model.addAttribute("sort", sort);
+        List<Item> items = this.itemService.listItem(sort);
         canCollect(items, model);
         setPaging(page, model, items);
 //        logger.info("********************************** return items **********************************");
@@ -44,16 +41,17 @@ public class ItemController {
     public String searchItem(@RequestParam(required = false) Integer page, @RequestParam(required = false) String searchItem, String sort, Model model) {
         logger.info("**************** Method item/search *****************");
         model.addAttribute("item", new Item());
-        String search;
-        if(sort!=null)sortType=sort;
-        if(searchItem!=null){
-            search=searchItem;
-            searchString=searchItem;
-        }
-        else if(searchString!=null)search=searchString;
-        else return "redirect:/items";
+//        String search;
+        model.addAttribute("sort", sort);
+        model.addAttribute("searchItem", searchItem);
+//        if(searchItem!=null){
+//            search=searchItem;
+//            searchString=searchItem;
+//        }
+//        else if(searchString!=null)search=searchString;
+//        else return "redirect:/items";
 
-        List<Item> listSearch = this.itemService.getItemByName(search, sortType);
+        List<Item> listSearch = this.itemService.getItemByName(searchItem, sort);
         setPaging(page, model, listSearch);
         return "item";
     }
@@ -76,7 +74,7 @@ public class ItemController {
     @RequestMapping("/edit/{id}")
     public String editItem(@PathVariable("id") int id, Model model){
         model.addAttribute("item", this.itemService.getItemById(id));
-        model.addAttribute("listItems", this.itemService.listItem(sortType));
+        //model.addAttribute("listItems", this.itemService.listItem(sortType));
         return "item";
     }
 

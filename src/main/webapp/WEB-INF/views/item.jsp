@@ -27,7 +27,8 @@
 
 <c:set var="currentPage" value="${requestScope['javax.servlet.forward.request_uri']}"/>
 <c:set var="currentQuery" value="&${pageContext.request.queryString}"/>
-<table><tr><td width="295">
+<table><tr>
+    <td width="295">
 <c:url var="addAction" value="/item/add" ></c:url>
 <form:form action="${addAction}" modelAttribute="item">
     <table>
@@ -94,7 +95,9 @@
         </tr>
     </table>
 </form:form>
-</td><td width="275" style="vertical-align: top">
+</td>
+    <td width="275" style="vertical-align: top">
+    <c:if test="${currentPage == '/items' || currentPage == '/item/search'}">
     <c:url var="searchAction" value="/item/search"></c:url>
 
     <form:form action="${searchAction}" modelAttribute="item">
@@ -113,8 +116,10 @@
             </td></tr>
         </table>
     </form:form>
-
-
+    </c:if>
+        <h4>Фильтр:</h4>
+        <a href="/item/filter">Все детали</a>
+        <a href="/item/filter">Только необходимые</a>
 </td></tr></table>
 
 
@@ -123,10 +128,24 @@
       <h3>Список комплектующих:</h3>
       <table class="tg" border="1">
           <tr>
-              <%--<th width="80">ID</th>--%>
-              <th width="200"><a href="?page=${page}&sort=name">Наименование</a></th>
-              <th width="120"><a href="?sort=req">Необходимость</a></th>
-              <th width="80"><a href="?sort=qty">Количество</a></th>
+              <c:url value="${currentPage}" var="toSortByName">
+                  <c:if test="${!empty page}"><c:param name="page" value="${page}"/></c:if>
+                  <c:param name="sort" value="name"/>
+                  <c:if test="${!empty searchItem}"><c:param name="searchItem" value="${searchItem}"/></c:if>
+              </c:url>
+              <th width="200"><a href="<c:out value="${toSortByName}"/>">Наименование</a></th>
+              <c:url value="${currentPage}" var="toSortByReq">
+                  <c:if test="${!empty page}"><c:param name="page" value="${page}"/></c:if>
+                  <c:param name="sort" value="req"/>
+                  <c:if test="${!empty searchItem}"><c:param name="searchItem" value="${searchItem}"/></c:if>
+              </c:url>
+              <th width="120"><a href="<c:out value="${toSortByReq}"/>">Необходимость</a></th>
+              <c:url value="${currentPage}" var="toSortByQty">
+                  <c:if test="${!empty page}"><c:param name="page" value="${page}"/></c:if>
+                  <c:param name="sort" value="qty"/>
+                  <c:if test="${!empty searchItem}"><c:param name="searchItem" value="${searchItem}"/></c:if>
+              </c:url>
+              <th width="80"><a href="<c:out value="${toSortByQty}"/>">Количество</a></th>
               <th width="60">Изменить</th>
               <th width="60">Удалить</th>
           </tr>
@@ -136,22 +155,26 @@
                   <td>${item.name}</td>
                   <%--<td>${item.req}</td>--%>
                   <td align="center">
-                     <c:if test="${item.req == true}">V</c:if>
+                      <c:choose>
+                          <c:when test="${item.req== true}">Да</c:when>
+                          <c:otherwise>Нет</c:otherwise>
+                      </c:choose>
+                     <%--<c:if test="${item.req == true}">V</c:if>--%>
                   </td>
-                  <td>${item.qty}</td>
+                  <td align="center">${item.qty}</td>
                   <td align="center"><a href="<c:url value='/edit/${item.id}'/>">Изменить</a></td>
                   <td align="center"><a href="<c:url value='/remove/${item.id}'/>">Удалить</a></td>
               </tr>
           </c:forEach>
       </table>
   </c:if>
-
-<c:choose>
-    <c:when test="${currentPage == '/item/search'}">
-        <table width="532" align="right">
-        <div id="pagination">
-        <c:url value="/item/search" var="prev">
+<c:if test="${maxPages>1}">
+  <table width="532" align="right">
+     <div id="pagination">Стр:
+        <c:url value="${currentPage}" var="prev">
             <c:param name="page" value="${page-1}"/>
+            <c:if test="${!empty sort}"><c:param name="sort" value="${sort}"/></c:if>
+            <c:if test="${!empty searchItem}"><c:param name="searchItem" value="${searchItem}"/></c:if>
         </c:url>
         <c:if test="${page > 1}">
             <a href="<c:out value="${prev}" />" class="pn prev">Пред</a>
@@ -163,75 +186,42 @@
                     <span>${i.index}</span>
                 </c:when>
                 <c:otherwise>
-                    <c:url value="/item/search" var="url">
+                    <c:url value="${currentPage}" var="url">
                         <c:param name="page" value="${i.index}"/>
+                        <c:if test="${!empty sort}"><c:param name="sort" value="${sort}"/></c:if>
+                        <c:if test="${!empty searchItem}"><c:param name="searchItem" value="${searchItem}"/></c:if>
                     </c:url>
                     <a href='<c:out value="${url}" />'>${i.index}</a>
                 </c:otherwise>
             </c:choose>
         </c:forEach>
-        <c:url value="/item/search" var="next">
+        <c:url value="${currentPage}" var="next">
             <c:param name="page" value="${page + 1}"/>
+            <c:if test="${!empty sort}"><c:param name="sort" value="${sort}"/></c:if>
+            <c:if test="${!empty searchItem}"><c:param name="searchItem" value="${searchItem}"/></c:if>
         </c:url>
         <c:if test="${page + 1 <= maxPages}">
             <a href='<c:out value="${next}" />' class="pn next">След</a>
 
         </div>
         </table>
-        </c:if>
-    </c:when>
-
-    <c:otherwise>
-    <table width="532" align="right">
-    <div id="pagination">
-    <c:url value="/items" var="prev">
-        <c:param name="page" value="${page-1}&${currentQuery}"/>
-    </c:url>
-    <c:if test="${page > 1}">
-        <a href="<c:out value="${prev}" />" class="pn prev">Пред</a>
     </c:if>
-
-    <c:forEach begin="1" end="${maxPages}" step="1" varStatus="i">
-        <c:choose>
-            <c:when test="${page == i.index}">
-                <span>${i.index}</span>
-            </c:when>
-            <c:otherwise>
-                <c:url value="/items" var="url">
-                    <c:param name="page" value="${i.index}"/>
-                </c:url>
-                <a href='<c:out value="${url}" />'>${i.index}</a>
-            </c:otherwise>
-        </c:choose>
-    </c:forEach>
-    <c:url value="/items" var="next">
-        <c:param name="page" value="${page + 1}"/>
-    </c:url>
-    <c:if test="${page + 1 <= maxPages}">
-        <a href='<c:out value="${next.concat(currentQuery)}" />' class="pn next">След</a>
-
-</div>
-</table>
-
+</c:if>
+<c:if test="${currentPage == '/items'}">
 <table border="1" class="tg">
     <tr>
-        <td width="250" align="right">Можно собрать:</td>
-        <td width="132" align="center">${counter}</td>
-        <td width="130" align="left">компьютеров</td>
+        <td width="330" align="right">Можно собрать:</td>
+        <td width="80" align="center">${counter}</td>
+        <td width="136" align="left">компьютеров</td>
     </tr>
 </table>
 </c:if>
-    </c:otherwise>
-</c:choose>
 
-<br>
-<h3>Переменные</h3>
-<h5>${currentQuery}</h5>
-<br>
-<h5>${requestScope['javax.servlet.forward.request_uri']}</h5>
-<h5>${pageContext.request.queryString}</h5>
-<h5>${pageContext.request.method}</h5>
-<a href="?${currentQuery}${page}">testlink</a>
+<%--<table>--%>
+    <%--<tr><td>currentQuery: </td><td>${currentQuery}</td></tr>--%>
+    <%--<tr><td>requestScope</td><td>${requestScope['javax.servlet.forward.request_uri']}</td></tr>--%>
+    <%--<tr><td>queryString</td><td>${pageContext.request.queryString}</td></tr>--%>
+<%--</table>--%>
 
   </body>
 </html>

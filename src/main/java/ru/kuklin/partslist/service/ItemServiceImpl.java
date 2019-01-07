@@ -31,6 +31,9 @@ public class ItemServiceImpl implements ItemService{
     @Override
     @Transactional
     public List<Item> listItem(String sort) {
+        if(sort!=null){
+            if(sort.equals("req"))sort = "req desc";
+        }
         return this.itemDAO.listItem("from Item order by "+sort);
     }
 
