@@ -95,9 +95,9 @@
     </table>
 </form:form>
 </td><td width="275" style="vertical-align: top">
-    <c:url var="addAction" value="/item/search"></c:url>
+    <c:url var="searchAction" value="/item/search"></c:url>
 
-    <form:form action="${searchAction}" modelAttribute="item" method="post">
+    <form:form action="${searchAction}" modelAttribute="item">
         <table width="275">
             <tr><td align="right" style="vertical-align: top;">
                 <input type="text" name="searchItem" id="searchItem"
@@ -225,15 +225,13 @@
 </c:choose>
 
 <br>
-<h5>test</h5>
+<h3>Переменные</h3>
 <h5>${currentQuery}</h5>
-<%--<br>
-<h5>${pageContext.request.pathInfo}</h5>
+<br>
+<h5>${requestScope['javax.servlet.forward.request_uri']}</h5>
 <h5>${pageContext.request.queryString}</h5>
-<h5>${pageContext.request.servletPath}</h5>
-<h5>${pageContext.request.contextPath}</h5>
-<h5>${pageContext.request.method}</h5>--%>
-<a href="?${currentQuery}">testlink</a>
+<h5>${pageContext.request.method}</h5>
+<a href="?${currentQuery}${page}">testlink</a>
 
   </body>
 </html>
