@@ -58,7 +58,7 @@ public class ItemServiceImpl implements ItemService{
         List<Item> list;
         if(search!=null)list = getItemByName(search, sort);
         else list = listItem(sort);
-        List<Item> result = new ArrayList<>();
+        List<Item> result = new ArrayList<Item>();
         for(Item item: list){
             if(item.getReq()==filter)result.add(item);
 
