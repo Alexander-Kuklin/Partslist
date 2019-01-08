@@ -114,14 +114,14 @@
         Фильтр: <br>
         <c:url value="${currentPage}" var="filterCancel">
             <c:param name="page" value="1"/>
-            <c:if test="${!empty sort}"><c:param name="sort" value="name"/></c:if>
+            <c:if test="${!empty sort}"><c:param name="sort" value="${sort}"/></c:if>
             <c:if test="${!empty searchItem}"><c:param name="searchItem" value="${searchItem}"/></c:if>
             <c:param name="filter" value="false"/>
         </c:url>
         <a href="<c:out value="${filterCancel}"/>"> Все детали </a><br>
         <c:url value="${currentPage}" var="filterUrl">
             <c:param name="page" value="1"/>
-            <c:if test="${!empty sort}"><c:param name="sort" value="name"/></c:if>
+            <c:if test="${!empty sort}"><c:param name="sort" value="${sort}"/></c:if>
             <c:if test="${!empty searchItem}"><c:param name="searchItem" value="${searchItem}"/></c:if>
             <c:param name="filter" value="true"/>
         </c:url>
