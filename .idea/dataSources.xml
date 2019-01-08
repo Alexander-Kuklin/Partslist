@@ -17,5 +17,21 @@
         <property name="password" value="root" />
       </driver-properties>
     </data-source>
+    <data-source source="LOCAL" name="@localhost" uuid="8d4d1b80-9ef0-491e-852b-6dac3dccd7cc">
+      <driver-ref>mysql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306</jdbc-url>
+      <driver-properties>
+        <property name="autoReconnect" value="true" />
+        <property name="zeroDateTimeBehavior" value="convertToNull" />
+        <property name="tinyInt1isBit" value="false" />
+        <property name="characterEncoding" value="utf8" />
+        <property name="characterSetResults" value="utf8" />
+        <property name="yearIsDateType" value="false" />
+        <property name="user" value="root" />
+        <property name="password" value="root" />
+      </driver-properties>
+    </data-source>
   </component>
 </project>

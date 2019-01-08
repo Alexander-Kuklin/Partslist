@@ -31,7 +31,6 @@ public class ItemController {
         model.addAttribute("filter", filter);
         List<Item> items;
         if(filter==null)filter=false;
-        logger.info(" filter value : " + filter);
         if(filter) items = this.itemService.getItemByName("", sort, filter);
         else items = this.itemService.listItem(sort);
         canCollect(items, model);
@@ -47,7 +46,6 @@ public class ItemController {
         model.addAttribute("filter", filter);
         if(filter==null)filter=false;
         List<Item> listSearch;
-        logger.info(" " + filter);
         if(filter)listSearch = this.itemService.getItemByName(searchItem, sort, true);
         else listSearch = this.itemService.getItemByName(searchItem, sort);
         setPaging(page, model, listSearch);

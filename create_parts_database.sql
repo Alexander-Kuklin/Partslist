@@ -29,16 +29,3 @@ INSERT INTO PARTS (name, qty, req) values  ('Коврик для мыши', 9, 0
 INSERT INTO PARTS (name, qty, req) values  ('Монитор 23"', 5, 1);
 INSERT INTO PARTS (name, qty, req) values  ('Монитор 27"', 3, 0);
 COMMIT;
-
-
-
-use test;
-DROP TABLE IF EXISTS PERSON;
-CREATE TABLE person
-(
-	id int PRIMARY KEY AUTO_INCREMENT,
-	name varchar(255) NOT NULL,
-	country varchar(255) NOT NULL
-)DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE UNIQUE INDEX person_id_uindex ON person (id);
-CREATE UNIQUE INDEX person_name_uindex ON person (name);
