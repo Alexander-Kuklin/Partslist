@@ -3,7 +3,6 @@
   User: Mac
   Date: 24.12.2018
   Time: 14:21
-  To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
@@ -62,7 +61,6 @@
                 </form:label>
             </td>
             <td>
-                <%--<form:input path="req"/>--%>
                 <form:checkbox path="req"/>
             </td>
         </tr>
@@ -87,11 +85,6 @@
                            value="<spring:message text="Добавить"/>" />
                 </c:if>
             </td>
-        </tr>
-        <tr>
-            <c:if test="${!empty error}">
-                <p style="color: red">${error}</p>
-            </c:if>
         </tr>
     </table>
 </form:form>
@@ -118,14 +111,22 @@
     </form:form>
     </c:if>
 
-        Фильтр:
-        <SELECT id="filter" name="filter" >
-            <option value="a" ${filter== 'a' ? 'selected' : ''}>A1</option>
-            <option value="b" ${filter== 'b' ? 'selected' : ''}>B1</option>
-            <option value="c" ${filter== 'c' ? 'selected' : ''}>C1</option>
-            <option value="d" ${filter== 'd' ? 'selected' : ''}>D1</option>
+        Фильтр: <br>
+        <c:url value="${currentPage}" var="filterCancel">
+            <c:param name="page" value="1"/>
+            <c:if test="${!empty sort}"><c:param name="sort" value="name"/></c:if>
+            <c:if test="${!empty searchItem}"><c:param name="searchItem" value="${searchItem}"/></c:if>
+            <c:param name="filter" value="false"/>
+        </c:url>
+        <a href="<c:out value="${filterCancel}"/>"> Все детали </a><br>
+        <c:url value="${currentPage}" var="filterUrl">
+            <c:param name="page" value="1"/>
+            <c:if test="${!empty sort}"><c:param name="sort" value="name"/></c:if>
+            <c:if test="${!empty searchItem}"><c:param name="searchItem" value="${searchItem}"/></c:if>
+            <c:param name="filter" value="true"/>
+        </c:url>
+        <a href="<c:out value="${filterUrl}"/>">Необходимые детали</a>
 
-        </select>
 </td></tr></table>
 
 
@@ -138,18 +139,21 @@
                   <c:if test="${!empty page}"><c:param name="page" value="${page}"/></c:if>
                   <c:param name="sort" value="name"/>
                   <c:if test="${!empty searchItem}"><c:param name="searchItem" value="${searchItem}"/></c:if>
+                  <c:if test="${!empty filter}"><c:param name="filter" value="${filter}"/></c:if>
               </c:url>
               <th width="200"><a href="<c:out value="${toSortByName}"/>">Наименование</a></th>
               <c:url value="${currentPage}" var="toSortByReq">
                   <c:if test="${!empty page}"><c:param name="page" value="${page}"/></c:if>
                   <c:param name="sort" value="req"/>
                   <c:if test="${!empty searchItem}"><c:param name="searchItem" value="${searchItem}"/></c:if>
+                  <c:if test="${!empty filter}"><c:param name="filter" value="${filter}"/></c:if>
               </c:url>
               <th width="120"><a href="<c:out value="${toSortByReq}"/>">Необходимость</a></th>
               <c:url value="${currentPage}" var="toSortByQty">
                   <c:if test="${!empty page}"><c:param name="page" value="${page}"/></c:if>
                   <c:param name="sort" value="qty"/>
                   <c:if test="${!empty searchItem}"><c:param name="searchItem" value="${searchItem}"/></c:if>
+                  <c:if test="${!empty filter}"><c:param name="filter" value="${filter}"/></c:if>
               </c:url>
               <th width="80"><a href="<c:out value="${toSortByQty}"/>">Количество</a></th>
               <th width="60">Изменить</th>
@@ -178,6 +182,7 @@
             <c:param name="page" value="${page-1}"/>
             <c:if test="${!empty sort}"><c:param name="sort" value="${sort}"/></c:if>
             <c:if test="${!empty searchItem}"><c:param name="searchItem" value="${searchItem}"/></c:if>
+            <c:if test="${!empty filter}"><c:param name="filter" value="${filter}"/></c:if>
         </c:url>
         <c:if test="${page > 1}">
             <a href="<c:out value="${prev}" />" class="pn prev">Пред</a>
@@ -193,6 +198,7 @@
                         <c:param name="page" value="${i.index}"/>
                         <c:if test="${!empty sort}"><c:param name="sort" value="${sort}"/></c:if>
                         <c:if test="${!empty searchItem}"><c:param name="searchItem" value="${searchItem}"/></c:if>
+                        <c:if test="${!empty filter}"><c:param name="filter" value="${filter}"/></c:if>
                     </c:url>
                     <a href='<c:out value="${url}" />'>${i.index}</a>
                 </c:otherwise>
@@ -202,6 +208,7 @@
             <c:param name="page" value="${page + 1}"/>
             <c:if test="${!empty sort}"><c:param name="sort" value="${sort}"/></c:if>
             <c:if test="${!empty searchItem}"><c:param name="searchItem" value="${searchItem}"/></c:if>
+            <c:if test="${!empty filter}"><c:param name="filter" value="${filter}"/></c:if>
         </c:url>
         <c:if test="${page + 1 <= maxPages}">
             <a href='<c:out value="${next}" />' class="pn next">След</a>
@@ -219,14 +226,6 @@
     </tr>
 </table>
 </c:if>
-
-<%--<table>--%>
-    <%--<tr><td>currentQuery: </td><td>${currentQuery}</td></tr>--%>
-    <%--<tr><td>requestScope</td><td>${requestScope['javax.servlet.forward.request_uri']}</td></tr>--%>
-    <%--<tr><td>queryString</td><td>${pageContext.request.queryString}</td></tr>--%>
-<%--</table>--%>
-<h5>values:</h5>
-<h1>${filter}</h1>
 
   </body>
 </html>

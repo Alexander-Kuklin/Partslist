@@ -57,7 +57,7 @@ public class ItemDAOImpl implements ItemDAO {
     @Override
     public Item getItemById(int id) {
         Session session = this.sessionFactory.getCurrentSession();
-        Item item = (Item) session.load(Item.class, new Integer(id));
+        Item item = session.load(Item.class, new Integer(id));
         logger.info("Item loaded: " + item);
         return item;
     }
@@ -65,7 +65,7 @@ public class ItemDAOImpl implements ItemDAO {
     @Override
     public void removeItem(int id) {
         Session session = this.sessionFactory.getCurrentSession();
-        Item item = (Item) session.load(Item.class, new Integer(id));
+        Item item = session.load(Item.class, new Integer(id));
         if(item != null){
             session.delete(item);
             logger.info("Removing items: " + item);
@@ -76,11 +76,10 @@ public class ItemDAOImpl implements ItemDAO {
 
     @Override
     public int canCollect() {
-        Session session = this.sessionFactory.getCurrentSession();
         List<Item> list = listItem("name");
         int result = Integer.MAX_VALUE;
         for(Item i:list){
-            if(i.getReq()==true && i.getQty()<result)result=i.getQty();
+            if(i.getReq() && i.getQty()<result)result=i.getQty();
         }
         return result;
     }

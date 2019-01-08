@@ -1,15 +1,18 @@
 package ru.kuklin.partslist.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kuklin.partslist.dao.ItemDAO;
 import ru.kuklin.partslist.model.Item;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ItemServiceImpl implements ItemService{
-
+    private static final Logger logger = LoggerFactory.getLogger(ItemServiceImpl.class);
     private ItemDAO itemDAO;
 
     public void setItemDAO(ItemDAO itemDAO) {
@@ -41,13 +44,27 @@ public class ItemServiceImpl implements ItemService{
     @Transactional
     public List<Item> getItemByName(String search, String sort) {
         StringBuilder query = new StringBuilder();
-        query.append("from Item");
-        query.append(" where lower(name) like lower('%" + search + "%')");
+        query.append("from Item where lower(name) like lower('%" + search + "%')");
         if(sort!=null){
             if(sort.equals("req"))sort = "req desc";
             query.append(" order by "+sort);
         }
         return this.itemDAO.listItem(query.toString());
+    }
+
+    @Override
+    @Transactional
+    public List<Item> getItemByName(String search, String sort, Boolean filter) {
+        logger.info("method getItemByName with filter");
+        List<Item> list;
+        if(search!=null)list = getItemByName(search, sort);
+        else list = listItem(sort);
+        List<Item> result = new ArrayList<>();
+        for(Item item: list){
+            if(item.getReq()==filter)result.add(item);
+
+        }
+        return result;
     }
 
     @Override
