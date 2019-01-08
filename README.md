@@ -16,6 +16,7 @@ create_parts_database.sql
 
 Приложение доступно по урл:
 http://localhost:8080/index.jsp
+или http://localhost:8080/items
 
 ===========================
 Используемые технологии:
