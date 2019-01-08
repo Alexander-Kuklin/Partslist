@@ -41,7 +41,6 @@ public class ItemController {
 
     @RequestMapping(value = "item/search")
     public String searchItem(@RequestParam(required = false) Integer page, @RequestParam(required = false) String searchItem, String sort, Boolean filter, Model model) {
-        logger.info("**************** Method item/search *****************");
         model.addAttribute("item", new Item());
         model.addAttribute("sort", sort);
         model.addAttribute("searchItem", searchItem);

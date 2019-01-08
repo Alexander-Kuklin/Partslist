@@ -55,7 +55,6 @@ public class ItemServiceImpl implements ItemService{
     @Override
     @Transactional
     public List<Item> getItemByName(String search, String sort, Boolean filter) {
-        logger.info("method getItemByName with filter");
         List<Item> list;
         if(search!=null)list = getItemByName(search, sort);
         else list = listItem(sort);
