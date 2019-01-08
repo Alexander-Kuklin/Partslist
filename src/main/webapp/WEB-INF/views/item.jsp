@@ -25,7 +25,7 @@
 </h1>
 
 <c:set var="currentPage" value="${requestScope['javax.servlet.forward.request_uri']}"/>
-<c:set var="currentQuery" value="&${pageContext.request.queryString}"/>
+<c:set var="currentQuery" value="${pageContext.request.queryString}"/>
 <table><tr>
     <td width="295">
 <c:url var="addAction" value="/item/add" ></c:url>
